@@ -84,7 +84,7 @@ namespace RoyTheunissen.GuidSearch
         private bool HasFilesToSearchIn => EditorPrefs.HasKey(EditorPrefAssetsToSearchIn);
 
         [MenuItem("Window/Search/GUID Search")]
-        public static void ShowExample()
+        public static void OpenGuidSearchWindow()
         {
             GuidSearchWindow window = GetWindow<GuidSearchWindow>();
             
@@ -146,6 +146,10 @@ namespace RoyTheunissen.GuidSearch
             resultsListView.makeItem = () => new ObjectField();
             resultsListView.bindItem = (element, i) => (element as ObjectField).value = results[i];
             resultsListView.itemsSource = results;
+            
+            // Default to searching for whatever Object was selected when the window was opened.
+            if (Selection.activeObject != null)
+                assetField.value = Selection.activeObject;
         }
 
         private void HandleFilesToSearchInChangedEvent(ChangeEvent<int> evt)
