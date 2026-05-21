@@ -14,6 +14,17 @@ namespace RoyTheunissen.GuidSearch
 
             return name.Substring(prefix.Length);
         }
+        
+        public static string RemoveSuffix(this string name, string suffix)
+        {
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(suffix))
+                return name;
+
+            if (!name.EndsWith(suffix))
+                return name;
+
+            return name.Substring(0, name.Length - suffix.Length);
+        }
 
         private static readonly char[] DirectorySeparators =
             { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };

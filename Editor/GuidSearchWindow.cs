@@ -20,6 +20,7 @@ namespace RoyTheunissen.GuidSearch
             Prefabs = 1 << 1,
             ScriptableObjects = 1 << 2,
             Materials = 1 << 3,
+            Models = 1 << 4,
         }
 
         private static readonly Dictionary<AssetTypes, string[]> assetTypeToExtensions = new()
@@ -28,6 +29,7 @@ namespace RoyTheunissen.GuidSearch
             { AssetTypes.Prefabs, new[] { ".prefab" } },
             { AssetTypes.ScriptableObjects, new[] { ".asset" } },
             { AssetTypes.Materials, new[] { ".mat" } },
+            { AssetTypes.Models, new[] { ".fbx", ".fbx.meta" } },
         };
 
         private static string cachedProjectPath;
@@ -52,6 +54,8 @@ namespace RoyTheunissen.GuidSearch
         private static string EditorPrefPrefix => ProjectPath + "RoyTheunissen/GUID-Search/";
         private static string EditorPrefSearchPath = EditorPrefPrefix + "SearchPath";
         private static string EditorPrefAssetsToSearchIn = EditorPrefPrefix + "AssetsToSearchIn";
+
+        private const string MetaFileSuffix = ".meta";
 
         [SerializeField]
         private VisualTreeAsset m_VisualTreeAsset = default;
@@ -204,6 +208,9 @@ namespace RoyTheunissen.GuidSearch
             for (int i = 0; i < files.Length; i++)
             {
                 string assetPath = files[i].RemovePrefix(ProjectPath);
+
+                // We cannot load a .meta file, load the file that the .meta file is for!
+                assetPath = assetPath.RemoveSuffix(MetaFileSuffix);
 
                 Object asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
 
