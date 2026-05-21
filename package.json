@@ -1,7 +1,7 @@
 {
   "name": "com.roytheunissen.guid-search",
   "displayName": "GUID Search",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "unity": "2022.3",
   "description": "Sometimes you really need to find all the places where an asset is being referenced, and Unity's own search solutions are too unreliable for this.",
   "keywords": [
