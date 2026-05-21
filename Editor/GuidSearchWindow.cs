@@ -29,7 +29,7 @@ namespace RoyTheunissen.GuidSearch
             { AssetTypes.Prefabs, new[] { ".prefab" } },
             { AssetTypes.ScriptableObjects, new[] { ".asset" } },
             { AssetTypes.Materials, new[] { ".mat" } },
-            { AssetTypes.Models, new[] { ".fbx", ".fbx.meta" } },
+            { AssetTypes.Models, new[] { ".fbx.meta" } },
         };
 
         private static string cachedProjectPath;
@@ -214,7 +214,12 @@ namespace RoyTheunissen.GuidSearch
 
                 Object asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
 
-                if (asset == null)
+                // Also check that the asset we found is not the asset we were looking for. For example:
+                // you are looking for a model. The GUID of the model is found in the .meta file of the model.
+                // Yeah no kidding. That is always going to be true.)
+                string assetGuid = AssetDatabase.AssetPathToGUID(assetPath);
+
+                if (asset == null || string.Equals(assetGuid, guidField.value, StringComparison.OrdinalIgnoreCase))
                     continue;
 
                 results.Add(asset);
